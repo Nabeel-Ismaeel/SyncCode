@@ -24,7 +24,7 @@ public class DefaultCodePublisher implements CodePublisher {
                         .detectLanguage(runCodeDto.getSnippetName())
                         .toString())
                 .build();
-
+        System.out.println("test websocket message");
         rabbitTemplate.convertAndSend(MessageQueueConstants.EXCHANGE_NAME.getValue(),
                 MessageQueueConstants.CODE_KEY.getValue(),
                 codeMessage);

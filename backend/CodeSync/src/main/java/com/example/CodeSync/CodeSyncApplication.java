@@ -9,6 +9,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Optional;
+
 @SpringBootApplication
 public class CodeSyncApplication implements CommandLineRunner {
     @Autowired
@@ -23,12 +25,14 @@ public class CodeSyncApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        clientRepo.save(Client
-                .builder()
-                .username("root")
-                .password(passwordEncoder.encode("root"))
-                .role(Role.ADMIN)
-                .build());
-        System.out.println("Admin logged in");
+        Optional<Client> root = clientRepo.findByUsername("root");
+        if (!root.isPresent()) {
+            clientRepo.save(Client
+                    .builder()
+                    .username("root")
+                    .password(passwordEncoder.encode("root"))
+                    .role(Role.ADMIN)
+                    .build());
+        }
     }
 }

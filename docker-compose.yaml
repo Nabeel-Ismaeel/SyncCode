@@ -1,0 +1,63 @@
+services:
+  postgres:
+    container_name: postgresDB
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      
+    ports:
+      - "5432:5432"
+    networks:
+      - my-network
+
+  mongo:
+    container_name: mongoDB
+    image: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - my-network
+  rabbitmq:
+    container_name: rabbitmq1
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_DEFAULT_USER: guest 
+      RABBITMQ_DEFAULT_PASS: guest  
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - my-network
+
+  code_execution:
+    container_name: code-executor
+    image: code-executer
+    ports:
+      - "8080:8080"
+    networks:
+      - my-network
+    depends_on:
+      - rabbitmq
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock 
+      - /home/root/shared_code:/shared_code
+    environment:
+      - HOST_CODE_DIR=/home/root/shared_code
+  
+  code_sync:
+    container_name: code-sync
+    image: sync-code
+    ports:
+      - "9090:9090"
+    networks:
+      - my-network
+    depends_on:
+      - rabbitmq
+      - postgres
+      - mongo
+
+networks:
+  my-network:
+    driver: bridge

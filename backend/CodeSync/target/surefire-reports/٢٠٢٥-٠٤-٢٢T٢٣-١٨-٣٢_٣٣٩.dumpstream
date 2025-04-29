@@ -1,0 +1,5 @@
+# Created at ٢٠٢٥-٠٤-٢٢T٢٣:١٨:٣٢.٦٤٩
+Boot Manifest-JAR contains absolute paths in classpath 'D:\GitRepo\SyncCode\backend\CodeSync\target\test-classes'
+Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
+'other' has different root
+
